@@ -1,0 +1,2 @@
+# rtk_kernel_test
+組み込みの勉強のためにT-Kernelをラズパイに入れたりしてみる
