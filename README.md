@@ -116,7 +116,40 @@ T-Kernel関連のファイルは、コンパイル手順で作成した下記3�
 - rominfo-rom.bin
 - kernel-rom.bin
 
-### ここから先はUSB-UART必須
+### ここから先はUSB-UART接続(3.3V)必須
+
+- USB-TTL GND(黒色) ⇔ ラズパイ GND   ( 6番ピン)
+- USB-TTL RX (白色) ⇔ ラズパイ GPIO14( 8番ピン): UART_TXD
+- USB-TTL TX (緑色) ⇔ ラズパイ GPIO15(10番ピン): UART_RXD
+- 赤(3.3V)は接続不要 (microUSBで電源供給される)
+
+### 接続
+
+- COMポート一覧取得及び接続
+  - ボーレート :115200
+  - データ長 :8bit
+  - パリティー :なし
+  - ストップビット :1
+  - フロー制御 :なし
+
+  ``` sh
+  $ ls -l /dev/tty.usb*
+  $ screen /dev/tty.usbserial-______ 115200,cs8,-parenb,-cstopb
+  ```
+
+- 切断
+  Control-a Control-k
+
+- 中断
+  Control-a Control-d
+
+- 再開
+
+``` sh
+$ screen -r
+```
+
+> 謎の文字化け発生中
 
 ## 実装
 
