@@ -7,6 +7,9 @@
 *.obj
 *.elf
 
+## githubにあげちゃう
+!boot/start.elf
+
 # Linker output
 *.ilk
 *.map
