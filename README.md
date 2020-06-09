@@ -5,36 +5,37 @@
 ## 前準備
 
 - 必要なもの
-  - Raspberry Pi (versionごとに多少手順異なる。自分は3B+)
+  - Raspberry Pi (versionごとに多少手順異なる。自分は3B)
   - Micro SD (4GBもあればいいとか。FATでフォーマットしておく)
   - USB-UART変換
+  - PC (MacBook Pro (13-inch, 2017, Four Thunderbolt 3 Ports), macOS Catalina 10.15.5)
 - 必要と思われるもの
-  - モニタ
+  - モニタ: シリアル通信でPCのターミナル上に出力されるからいらない説
 
 - ARMツールチェーンのインストール
 
-https://www.yokoweb.net/dokuwiki/develop/rtk_kernel/rtk_kernel-build-toolchain
-https://www.yokoweb.net/2018/05/16/macos-gcc-arm-brew-install/
+  https://www.yokoweb.net/dokuwiki/develop/rtk_kernel/rtk_kernel-build-toolchain
+  https://www.yokoweb.net/2018/05/16/macos-gcc-arm-brew-install/
 
-``` sh
-$ brew update && brew upgrade
-$ brew tap ArmMbed/homebrew-formulae
-$ brew install arm-none-eabi-gcc
-```
+  ``` sh
+  $ brew update && brew upgrade
+  $ brew tap ArmMbed/homebrew-formulae
+  $ brew install arm-none-eabi-gcc
+  ```
 
 - 確認
 
-``` sh
-$ arm-none-eabi-gcc --version
-$ which arm-none-eabi-gcc
-```
+  ``` sh
+  $ arm-none-eabi-gcc --version
+  $ which arm-none-eabi-gcc
+  ```
 
 - アンインストール
 
-``` sh
-$ brew uninstall gcc-arm-none-eabi
-$ brew untap ArmMbed/homebrew-formulae
-```
+  ``` sh
+  $ brew uninstall gcc-arm-none-eabi
+  $ brew untap ArmMbed/homebrew-formulae
+  ```
 
 ## ビルド、導入
 
@@ -145,16 +146,29 @@ T-Kernel関連のファイルは、コンパイル手順で作成した下記3�
 
 - 再開
 
-``` sh
-$ screen -r
-```
+  ``` sh
+  $ screen -r
+  ```
 
-> 謎の文字化け発生中
+### U-bootでT-kernel立ち上げ
+
+> 謎の自信により3B+で実行しようとしたが当然のようにbootで詰む。3Bを購入。uboot正常起動。
+
+- u-boot自動化(envバイナリファイル作成)
+
+  ``` sh
+  u-boot> setenv tk_bootcmd 'fatload mmc 0 8000 tmonitor.bin; fatload mmc 0 4000 rominfo-rom.bin; fatload mmc 0 30000 kernel-rom.bin; go 8000'
+  u-boot> setenv bootcmd 'run tk_bootcmd'
+  u-boot> setenv bootdelay 2
+  u-boot> saveenv
+  ```
+
+  コードつないで電源入れたらT-kernel立ち上がるようになった
 
 ## 実装
 
 https://www.yokoweb.net/dokuwiki/develop/rtk_kernel/rtk_kernel-rpi/implement/start
 
-## GitHub
+## 参考GitHub
 
 https://github.com/jr4qpv/rtk_kernel
